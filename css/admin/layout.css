@@ -45,3 +45,77 @@
     justify-content: center;
     padding-inline-start: 15rem;
 }
+
+#create-overview {
+    padding-block-start: 1.5rem;
+    margin-bottom: 3rem;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    row-gap: 0.5rem;
+}
+
+#create-overview button {
+    justify-self: end;
+    grid-row: span 2;
+    font-size: 1.1rem;
+    padding: 0.7rem;
+    border-radius: 8px;
+    max-height: fit-content;
+    width: 35%;
+    background: var(--secondary);
+    color: rgb(6, 75, 92);
+    border: none;
+}
+
+#create-overview p {
+    color: rgb(80, 79, 79);
+}
+
+#management-container {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+#filter-container {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 1rem;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+    margin-bottom: 1rem;
+    padding-inline-start: 2rem;
+}
+
+#filter-container input {
+    border: none;
+    background: rgba(128, 128, 128, 0.1);
+    color: rgb(31, 31, 31);
+    padding-block: 0.6rem;
+    width: 25%;
+    padding-inline-start: 2rem;
+    border-radius: 8px;
+    font-size: 1.05rem;
+}
+
+#management-buttons {
+    display: flex;
+    gap: 2rem;
+    padding-inline-end: 3rem;
+}
+
+#filter-container button {
+    font-size: 1.1rem;
+    padding: 0.7rem;
+    border-radius: 8px;
+    max-height: fit-content;
+    background: transparent;
+    color: black;
+    border: none;
+}
+
+#management-list {
+    display: flex
+}

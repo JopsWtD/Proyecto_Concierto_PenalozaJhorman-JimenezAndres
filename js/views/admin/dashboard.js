@@ -50,6 +50,7 @@ export function dashboard() {
                 <article id="genres-popularity-container">
                     <h3>Géneros populares</h3>
                     <div id="genres-popularity">
+                    ${datosPrueba2()}
                     </div>
                 </article>
             </div>
@@ -59,11 +60,26 @@ export function dashboard() {
 }
 
 function datosPrueba() {
-    return `<li>
-    <span>DATE</span>
-    <span>CUSTOMER</span>
-    <span>CITY</span>
-    <span>TOTAL</span>
-    <span>ACTION</span>
-    </li>`;
+    return `
+    <li>
+        <span>DATE</span>
+        <span>CUSTOMER</span>
+        <span>CITY</span>
+        <span>TOTAL</span>
+        <span>ACTION</span> 
+    </li>
+    `;
+}
+
+
+function datosPrueba2() {
+    return `
+    <div id="genres-popularity-text">
+        <h3>Nombre del género</h3>
+        <p>75%</p>
+    </div>
+    <div class="progress-bar">
+        <div class="filler-bar"></div>
+    </div>
+    `;
 }

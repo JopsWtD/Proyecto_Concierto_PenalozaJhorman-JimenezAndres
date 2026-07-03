@@ -77,7 +77,7 @@
 #dashboard-grid-handler {
     display: grid;
     grid-template-columns: 6fr 1fr;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 #recent-sales-container {
@@ -93,10 +93,63 @@
 
 #recent-sales li {
     display: flex;
-    border: 1px solid black;
     justify-content: space-between;
     padding: 0.5rem 3rem;
     width: 100%;
 }
 
-#recent-sales li span {}
+#recent-sales li span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+#genres-popularity-container {
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 20rem;
+}
+
+#genres-popularity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+#genres-popularity-text {
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 0.6rem;
+    background: rgba(128, 128, 128, 0.15);
+    border-radius: 10px;
+}
+
+.filler-bar {
+    width: 75%;
+    height: 100%;
+    background: var(--secondary);
+    border-radius: 10px;
+}
+
+
+#management-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 3rem;
+    width: 100%;
+}
+
+#management-list li span {
+    display: inline-block;
+    width: 100%;
+    text-align: start;
+}
