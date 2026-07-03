@@ -57,11 +57,14 @@ export function showToast(message, type = "success", duration = 3500) {
  * Navbar + Carrito globales
  * ===================================================================== */
 function mountShell() {
+  const navbarSlot = document.getElementById("navbar");
+  const modalContainer = document.getElementById("modal-container");
+
   const navbar = document.createElement("cc-navbar");
-  document.body.prepend(navbar);
+  navbarSlot.appendChild(navbar);
 
   const cartModal = document.createElement("cc-cart-modal");
-  document.body.appendChild(cartModal);
+  modalContainer.appendChild(cartModal);
 
   navbar.addEventListener("cc-open-cart", () => cartModal.open());
 
@@ -121,7 +124,7 @@ function setupRoutes() {
 function bootstrap() {
   mountShell();
   setupRoutes();
-  initRouter(document.getElementById("app-view"));
+  initRouter(document.getElementById("app"));
 }
 
 document.addEventListener("DOMContentLoaded", bootstrap);
