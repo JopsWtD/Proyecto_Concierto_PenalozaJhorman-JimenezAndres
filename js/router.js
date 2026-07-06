@@ -1,5 +1,8 @@
-import { categories } from "./views/admin/categories";
-import { dashboard } from "./views/admin/dashboard";
+import { initializeSidebar } from "./handlers/adminHandlers.js";
+import { categories } from "./views/admin/categories.js";
+import { dashboard } from "./views/admin/dashboard.js";
+import { events } from "./views/admin/events.js";
+import { sales } from "./views/admin/sales.js";
 
 const routes = {
     "#dashboard": dashboard,
@@ -9,5 +12,11 @@ const routes = {
 }
 
 export function loadRoute() {
-const app = document.querySelector("#")
+    const app = document.querySelector("#app");
+    const currentRoute = window.location.hash || "#dashboard";
+
+    const route = routes[currentRoute];
+    app.innerHTML = route();
+
+    initializeSidebar();
 }

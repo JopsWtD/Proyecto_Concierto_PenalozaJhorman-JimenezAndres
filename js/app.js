@@ -1,6 +1,6 @@
-import { dashboard } from "./views/admin/dashboard.js";
-import { events } from "./views/admin/events.js";
-import { categories } from "./views/admin/categories.js";
-import { sales } from "./views/admin/sales.js";
+import { initializeSidebar } from "./handlers/adminHandlers.js";
+import { loadRoute } from "./router.js";
 
-document.querySelector("#app").innerHTML = `${sales()}`;
+window.addEventListener("hashchange", loadRoute)
+
+window.addEventListener("DOMContentLoaded", loadRoute)
