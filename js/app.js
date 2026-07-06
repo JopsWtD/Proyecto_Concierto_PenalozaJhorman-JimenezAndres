@@ -1,5 +1,7 @@
 import { loadRoute } from "./router.js";
+import { seedData } from "./data-seed.js";
 
-window.addEventListener("hashchange", loadRoute)
+seedData();
 
-window.addEventListener("DOMContentLoaded", loadRoute)
+window.addEventListener("hashchange", loadRoute);
+window.addEventListener("DOMContentLoaded", loadRoute);
