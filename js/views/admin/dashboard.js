@@ -1,9 +1,11 @@
-import { sidebar } from "../../components/sidebar.js";
+import "../../components/sidebar.js";
 
-export function dashboard() {
-    return `
+class Dashboard extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
     <section class="admin-view-container">
-    ${sidebar()}
+
+    <sidebar-admin></sidebar-admin>
         <div id="admin-view-section">
             <article id="dashboard-overview">
                 <h2>Vista general</h2>
@@ -57,29 +59,7 @@ export function dashboard() {
         </div>
     </section>
     `;
+    }
 }
 
-function datosPrueba() {
-    return `
-    <li>
-        <span>DATE</span>
-        <span>CUSTOMER</span>
-        <span>CITY</span>
-        <span>TOTAL</span>
-        <span>ACTION</span> 
-    </li>
-    `;
-}
-
-
-function datosPrueba2() {
-    return `
-    <div id="genres-popularity-text">
-        <h3>Nombre del género</h3>
-        <p>75%</p>
-    </div>
-    <div class="progress-bar">
-        <div class="filler-bar"></div>
-    </div>
-    `;
-}
+customElements.define("dashboard", Dashboard);

@@ -1,10 +1,10 @@
-import { sidebar } from "../../components/sidebar.js";
+import "../../components/sidebar.js";
 
 export function sales() {
     return `
     <section class="admin-view-container">
 
-        ${sidebar()}
+    <sidebar-admin></sidebar-admin>
 
         <div id="admin-view-section">
 

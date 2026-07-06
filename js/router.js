@@ -1,4 +1,3 @@
-import { initializeSidebar } from "./handlers/adminHandlers.js";
 import { categories } from "./views/admin/categories.js";
 import { dashboard } from "./views/admin/dashboard.js";
 import { events } from "./views/admin/events.js";
@@ -17,6 +16,4 @@ export function loadRoute() {
 
     const route = routes[currentRoute];
     app.innerHTML = route();
-
-    initializeSidebar();
 }
