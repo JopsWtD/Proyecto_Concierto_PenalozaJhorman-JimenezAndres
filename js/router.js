@@ -15,95 +15,95 @@ import { renderEventDetail } from "./views/customer/eventDetail.js";
 import { isAuthenticated } from "./auth.js";
 
 const adminRoutes = {
-    "#dashboard": "dashboard-view",
-    "#categories": "categories-view",
-    "#events": "events-view",
-    "#sales": "sales-view"
+  "#dashboard": "dashboard-view",
+  "#categories": "categories-view",
+  "#events": "events-view",
+  "#sales": "sales-view",
 };
 
 function parseHash() {
-    const raw = window.location.hash.slice(1) || "/";
-    const [path, queryString = ""] = raw.split("?");
-    return { path, query: new URLSearchParams(queryString) };
+  const raw = window.location.hash.slice(1) || "/";
+  const [path, queryString = ""] = raw.split("?");
+  return { path, query: new URLSearchParams(queryString) };
 }
 
 function esRutaAdmin(hash) {
-    return hash === "#login" || Object.keys(adminRoutes).includes(hash);
+  return hash === "#login" || Object.keys(adminRoutes).includes(hash);
 }
 
 export function loadRoute() {
-    const app = document.querySelector("#app");
-    const hash = window.location.hash || "#/";
+  const app = document.querySelector("#app");
+  const hash = window.location.hash || "#/";
 
-    if (esRutaAdmin(hash)) {
-        toggleShell(false);
-        loadAdminRoute(app, hash);
-        return;
-    }
+  if (esRutaAdmin(hash)) {
+    toggleShell(false);
+    loadAdminRoute(app, hash);
+    return;
+  }
 
-    toggleShell(true);
-    loadCustomerRoute(app);
+  toggleShell(true);
+  loadCustomerRoute(app);
 }
 
 function loadAdminRoute(app, hash) {
-    if (hash === "#login") {
-        if (isAuthenticated()) {
-            window.location.hash = "#dashboard";
-            return;
-        }
-
-        app.innerHTML = "<login-modal></login-modal>";
-        return;
+  if (hash === "#login") {
+    if (isAuthenticated()) {
+      window.location.hash = "#dashboard";
+      return;
     }
 
-    if (!isAuthenticated()) {
-        window.location.hash = "#login";
-        return;
-    }
+    app.innerHTML = "<login-modal></login-modal>";
+    return;
+  }
 
-    const tag = adminRoutes[hash];
+  if (!isAuthenticated()) {
+    window.location.hash = "#login";
+    return;
+  }
 
-    if (!tag) {
-        window.location.hash = "#dashboard";
-        return;
-    }
+  const tag = adminRoutes[hash];
 
-    app.innerHTML = `<admin-layout active-route="${hash.replace("#", "")}"><${tag}></${tag}></admin-layout>`;
+  if (!tag) {
+    window.location.hash = "#dashboard";
+    return;
+  }
+
+  app.innerHTML = `<admin-layout active-route="${hash.replace("#", "")}"><${tag}></${tag}></admin-layout>`;
 }
 
 function loadCustomerRoute(app) {
-    const { path, query } = parseHash();
-    let vista = null;
+  const { path, query } = parseHash();
+  let vista = null;
 
-    if (path === "/" || path === "") {
-        vista = renderHome();
-    } else if (path === "/eventos") {
-        vista = renderEvents(query);
-    } else if (path.startsWith("/evento/")) {
-        const id = decodeURIComponent(path.split("/")[2]);
-        vista = renderEventDetail(id);
-    } else {
-        vista = renderNotFound();
-    }
+  if (path === "/" || path === "") {
+    vista = renderHome();
+  } else if (path === "/eventos") {
+    vista = renderEvents(query);
+  } else if (path.startsWith("/evento/")) {
+    const id = decodeURIComponent(path.split("/")[2]);
+    vista = renderEventDetail(id);
+  } else {
+    vista = renderNotFound();
+  }
 
-    app.innerHTML = "";
-    if (vista) app.appendChild(vista);
-    window.scrollTo(0, 0);
+  app.innerHTML = "";
+  if (vista) app.appendChild(vista);
+  window.scrollTo(0, 0);
 }
 
 function renderNotFound() {
-    const root = document.createElement("div");
-    root.className = "view-not-found section";
-    root.innerHTML = `
+  const root = document.createElement("div");
+  root.className = "view-not-found section";
+  root.innerHTML = `
     <div class="empty-state">
         <p class="empty-icon">🔎</p>
         <h3>Página no encontrada</h3>
         <a href="#/" class="btn-dark">Volver al inicio</a>
     </div>`;
-    return root;
+  return root;
 }
 
 function toggleShell(visible) {
-    const header = document.querySelector("#customer-shell");
-    if (header) header.hidden = !visible;
+  const header = document.querySelector("#customer-shell");
+  if (header) header.hidden = !visible;
 }
