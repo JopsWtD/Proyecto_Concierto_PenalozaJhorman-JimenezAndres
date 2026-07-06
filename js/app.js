@@ -5,11 +5,6 @@ import { showToast } from "./components/toast.js";
 
 seedData();
 
-window.addEventListener("hashchange", loadRoute);
-window.addEventListener("DOMContentLoaded", loadRoute);
-
-seedData();
-
 function montarShell() {
   const shell = document.querySelector("#customer-shell");
   const navbar = document.createElement("customer-navbar");
