@@ -1,92 +1,109 @@
-/**
- * router.js
- * -----------------------------------------------------------------------
- * Router SPA minimalista basado en el hash de la URL (#/ruta).
- * No depende de ninguna librería: escucha 'hashchange' y 'load', resuelve
- * la ruta contra las registradas (con soporte de parámetros :id) y monta
- * el Custom Element correspondiente dentro del contenedor #app-view.
- * -----------------------------------------------------------------------
- */
+import "./components/modal.js";
+import "./components/toast.js";
+import "./components/creationMenu.js";
+import "./components/loginModal.js";
+import "./components/navbar.js";
+import "./components/cartModal.js";
+import "./views/layouts/adminLayout.js";
+import "./views/admin/dashboard.js";
+import "./views/admin/categories.js";
+import "./views/admin/events.js";
+import "./views/admin/sales.js";
+import { renderHome } from "./views/customer/home.js";
+import { renderEvents } from "./views/customer/events.js";
+import { renderEventDetail } from "./views/customer/eventDetail.js";
+import { isAuthenticated } from "./auth.js";
 
-const routes = [];
-let outlet = null;
-let notFoundHandler = null;
-
-/**
- * Registra una ruta.
- * @param {string} pattern   Ej: '/', '/eventos', '/evento/:id'
- * @param {(params: Record<string,string>, query: URLSearchParams) => HTMLElement} render
- */
-export function registerRoute(pattern, render) {
-  const paramNames = [];
-  const regexStr = pattern
-    .replace(/\/+$/, "")
-    .split("/")
-    .map((segment) => {
-      if (segment.startsWith(":")) {
-        paramNames.push(segment.slice(1));
-        return "([^/]+)";
-      }
-      return segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    })
-    .join("/");
-
-  routes.push({
-    regex: new RegExp(`^${regexStr || "/"}$`),
-    paramNames,
-    render,
-  });
-}
-
-export function registerNotFound(render) {
-  notFoundHandler = render;
-}
-
-export function initRouter(outletElement) {
-  outlet = outletElement;
-  window.addEventListener("hashchange", resolveRoute);
-  window.addEventListener("load", resolveRoute);
-  // Si el script se ejecuta después de 'load', resolvemos ya mismo.
-  if (document.readyState === "complete") resolveRoute();
-}
-
-export function navigate(path) {
-  window.location.hash = path.startsWith("#") ? path : `#${path}`;
-}
+const adminRoutes = {
+    "#dashboard": "dashboard-view",
+    "#categories": "categories-view",
+    "#events": "events-view",
+    "#sales": "sales-view"
+};
 
 function parseHash() {
-  const raw = window.location.hash.slice(1) || "/";
-  const [path, queryString = ""] = raw.split("?");
-  const cleanPath = path.replace(/\/+$/, "") || "/";
-  return { path: cleanPath, query: new URLSearchParams(queryString) };
+    const raw = window.location.hash.slice(1) || "/";
+    const [path, queryString = ""] = raw.split("?");
+    return { path, query: new URLSearchParams(queryString) };
 }
 
-function resolveRoute() {
-  if (!outlet) return;
-  const { path, query } = parseHash();
+function esRutaAdmin(hash) {
+    return hash === "#login" || Object.keys(adminRoutes).includes(hash);
+}
 
-  for (const route of routes) {
-    const match = path.match(route.regex);
-    if (match) {
-      const params = {};
-      route.paramNames.forEach(
-        (name, i) => (params[name] = decodeURIComponent(match[i + 1])),
-      );
-      renderInto(route.render(params, query));
-      window.scrollTo(0, 0);
-      return;
+export function loadRoute() {
+    const app = document.querySelector("#app");
+    const hash = window.location.hash || "#/";
+
+    if (esRutaAdmin(hash)) {
+        toggleShell(false);
+        loadAdminRoute(app, hash);
+        return;
     }
-  }
 
-  if (notFoundHandler) {
-    renderInto(notFoundHandler());
-  } else {
-    outlet.innerHTML =
-      '<div class="empty-state"><h3>Página no encontrada</h3></div>';
-  }
+    toggleShell(true);
+    loadCustomerRoute(app);
 }
 
-function renderInto(node) {
-  outlet.innerHTML = "";
-  if (node) outlet.appendChild(node);
+function loadAdminRoute(app, hash) {
+    if (hash === "#login") {
+        if (isAuthenticated()) {
+            window.location.hash = "#dashboard";
+            return;
+        }
+
+        app.innerHTML = "<login-modal></login-modal>";
+        return;
+    }
+
+    if (!isAuthenticated()) {
+        window.location.hash = "#login";
+        return;
+    }
+
+    const tag = adminRoutes[hash];
+
+    if (!tag) {
+        window.location.hash = "#dashboard";
+        return;
+    }
+
+    app.innerHTML = `<admin-layout active-route="${hash.replace("#", "")}"><${tag}></${tag}></admin-layout>`;
+}
+
+function loadCustomerRoute(app) {
+    const { path, query } = parseHash();
+    let vista = null;
+
+    if (path === "/" || path === "") {
+        vista = renderHome();
+    } else if (path === "/eventos") {
+        vista = renderEvents(query);
+    } else if (path.startsWith("/evento/")) {
+        const id = decodeURIComponent(path.split("/")[2]);
+        vista = renderEventDetail(id);
+    } else {
+        vista = renderNotFound();
+    }
+
+    app.innerHTML = "";
+    if (vista) app.appendChild(vista);
+    window.scrollTo(0, 0);
+}
+
+function renderNotFound() {
+    const root = document.createElement("div");
+    root.className = "view-not-found section";
+    root.innerHTML = `
+    <div class="empty-state">
+        <p class="empty-icon">🔎</p>
+        <h3>Página no encontrada</h3>
+        <a href="#/" class="btn-dark">Volver al inicio</a>
+    </div>`;
+    return root;
+}
+
+function toggleShell(visible) {
+    const header = document.querySelector("#customer-shell");
+    if (header) header.hidden = !visible;
 }

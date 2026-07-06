@@ -1,80 +1,74 @@
-/**
- * <cc-navbar>
- * -----------------------------------------------------------------------
- * Barra de navegación pública (front de clientes). Incluye logo, enlaces
- * a Home/Eventos, ícono de carrito con contador reactivo y acceso al
- * login de administrador.
- * -----------------------------------------------------------------------
- */
-import { getCartCount } from "../storage.js";
+import { getCantidadCarrito } from "../handlers/customerHandlers.js";
 
-class CCNavbar extends HTMLElement {
-  connectedCallback() {
-    this.render();
-    this._onCartUpdated = () => this.updateCartBadge();
-    window.addEventListener("cart:updated", this._onCartUpdated);
-    window.addEventListener("hashchange", () => this.updateActiveLink());
-    this.updateActiveLink();
-  }
+class CustomerNavbar extends HTMLElement {
+    connectedCallback() {
+        this.render();
+        this.onCarritoActualizado = () => this.actualizarBadge();
+        window.addEventListener("carrito:actualizado", this.onCarritoActualizado);
+        window.addEventListener("hashchange", () => this.actualizarActivo());
+        this.actualizarActivo();
+    }
 
-  disconnectedCallback() {
-    window.removeEventListener("cart:updated", this._onCartUpdated);
-  }
+    disconnectedCallback() {
+        window.removeEventListener("carrito:actualizado", this.onCarritoActualizado);
+    }
 
-  render() {
-    this.innerHTML = `
-      <nav class="cc-navbar">
-        <div class="cc-navbar__inner container">
-          <a class="cc-navbar__brand" href="#/">Conciertos Conectados</a>
+    render() {
+        this.innerHTML = `
+        <nav id="customer-navbar">
+            <div id="navbar-inner">
+                <a id="navbar-brand" href="#/">Conciertos Conectados</a>
 
-          <button class="cc-navbar__burger hide-desktop" data-role="burger" aria-label="Abrir menú" type="button">
-            <span></span><span></span><span></span>
-          </button>
+                <button id="navbar-burger" type="button" aria-label="Abrir menú">☰</button>
 
-          <div class="cc-navbar__links" data-role="links">
-            <a href="#/" data-path="/">Inicio</a>
-            <a href="#/eventos" data-path="/eventos">Eventos</a>
-          </div>
+                <div id="navbar-links">
+                    <a href="#/" data-path="/">Inicio</a>
+                    <a href="#/eventos" data-path="/eventos">Eventos</a>
+                </div>
 
-          <div class="cc-navbar__actions">
-            <button class="cc-navbar__cart" data-role="cart-btn" type="button" aria-label="Ver carrito">
-              🛒
-              <span class="cc-navbar__cart-badge" data-role="cart-count" hidden>0</span>
-            </button>
-            <a class="btn btn--dark btn--sm" href="#/admin/login">Ingresar</a>
-          </div>
-        </div>
-      </nav>
-    `;
+                <div id="navbar-actions">
+                    <button id="navbar-cart" type="button" aria-label="Ver carrito">
+                        🛒
+                        <span id="navbar-cart-badge" hidden>0</span>
+                    </button>
+                    <a id="navbar-login" href="#login">Ingresar</a>
+                </div>
+            </div>
+        </nav>`;
 
-    this.querySelector('[data-role="cart-btn"]').addEventListener(
-      "click",
-      () => {
-        this.dispatchEvent(new CustomEvent("cc-open-cart", { bubbles: true }));
-      },
-    );
+        this.querySelector("#navbar-cart").addEventListener("click", () => {
+            this.dispatchEvent(new CustomEvent("abrir-carrito", { bubbles: true }));
+        });
 
-    this.querySelector('[data-role="burger"]').addEventListener("click", () => {
-      this.querySelector('[data-role="links"]').classList.toggle("is-open");
-    });
+        this.querySelector("#navbar-burger").addEventListener("click", () => {
+            this.querySelector("#navbar-links").classList.toggle("open");
+        });
 
-    this.updateCartBadge();
-  }
+        this.querySelectorAll("#navbar-links a").forEach((enlace) => {
+            enlace.addEventListener("click", () => {
+                this.querySelector("#navbar-links").classList.remove("open");
+            });
+        });
 
-  updateCartBadge() {
-    const badge = this.querySelector('[data-role="cart-count"]');
-    if (!badge) return;
-    const count = getCartCount();
-    badge.textContent = String(count);
-    badge.hidden = count === 0;
-  }
+        this.actualizarBadge();
+    }
 
-  updateActiveLink() {
-    const current = (window.location.hash.slice(1) || "/").split("?")[0];
-    this.querySelectorAll("[data-path]").forEach((a) => {
-      a.classList.toggle("is-active", a.dataset.path === current);
-    });
-  }
+    actualizarBadge() {
+        const badge = this.querySelector("#navbar-cart-badge");
+        if (!badge) return;
+
+        const cantidad = getCantidadCarrito();
+        badge.textContent = String(cantidad);
+        badge.hidden = cantidad === 0;
+    }
+
+    actualizarActivo() {
+        const actual = (window.location.hash.slice(1) || "/").split("?")[0];
+
+        this.querySelectorAll("[data-path]").forEach((enlace) => {
+            enlace.classList.toggle("active", enlace.dataset.path === actual);
+        });
+    }
 }
 
-customElements.define("cc-navbar", CCNavbar);
+customElements.define("customer-navbar", CustomerNavbar);

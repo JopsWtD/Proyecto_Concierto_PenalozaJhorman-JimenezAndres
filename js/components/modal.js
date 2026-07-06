@@ -1,86 +1,40 @@
-/**
- * <cc-modal>
- * -----------------------------------------------------------------------
- * Modal genérico y reutilizable (backdrop + panel + botón cerrar).
- * Cualquier otro componente (carrito, login, formularios admin) lo usa
- * como contenedor, inyectando su propio contenido dentro.
- *
- * Uso:
- *   const modal = document.createElement('cc-modal');
- *   modal.setAttribute('title', 'Mi carrito');
- *   modal.innerHTML = '<p>contenido...</p>';   // va al slot por defecto
- *   document.body.appendChild(modal);
- *   modal.open();
- *
- *   modal.addEventListener('cc-modal-close', () => modal.remove());
- * -----------------------------------------------------------------------
- */
+class AppModal extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+        <div id="modal-overlay" class="hidden">
+            <div id="modal-box">
+                <button id="modal-close" type="button" aria-label="Cerrar">&times;</button>
+                <div id="modal-content"></div>
+            </div>
+        </div>`;
 
-class CCModal extends HTMLElement {
-  constructor() {
-    super();
-    this._content = null;
-  }
+        this.overlay = this.querySelector("#modal-overlay");
+        this.content = this.querySelector("#modal-content");
 
-  connectedCallback() {
-    // Guardamos el contenido original (luz/light DOM) puesto por quien
-    // instancia el modal, antes de reemplazar el innerHTML.
-    if (!this._content) {
-      this._content = document.createElement("div");
-      this._content.className = "cc-modal__original-content";
-      while (this.firstChild) this._content.appendChild(this.firstChild);
+        this.querySelector("#modal-close").addEventListener("click", () => this.close());
+
+        this.overlay.addEventListener("click", (event) => {
+            if (event.target === this.overlay) this.close();
+        });
     }
 
-    const title = this.getAttribute("title") || "";
-    const size = this.getAttribute("size") || "md"; // sm | md | lg
+    open(html) {
+        this.content.innerHTML = html;
+        this.overlay.classList.remove("hidden");
+    }
 
-    this.innerHTML = `
-      <div class="cc-modal__backdrop" data-role="backdrop"></div>
-      <div class="cc-modal__panel cc-modal__panel--${size}" role="dialog" aria-modal="true" aria-label="${title}">
-        <div class="cc-modal__header">
-          <h3 class="cc-modal__title">${title}</h3>
-          <button class="cc-modal__close" data-role="close" type="button" aria-label="Cerrar">✕</button>
-        </div>
-        <div class="cc-modal__body" data-role="body"></div>
-      </div>
-    `;
-
-    this.querySelector('[data-role="body"]').appendChild(this._content);
-    this.querySelector('[data-role="backdrop"]').addEventListener("click", () =>
-      this.close(),
-    );
-    this.querySelector('[data-role="close"]').addEventListener("click", () =>
-      this.close(),
-    );
-    this._escHandler = (e) => {
-      if (e.key === "Escape") this.close();
-    };
-  }
-
-  open() {
-    this.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-    document.addEventListener("keydown", this._escHandler);
-  }
-
-  close() {
-    this.classList.remove("is-open");
-    document.body.style.overflow = "";
-    document.removeEventListener("keydown", this._escHandler);
-    this.dispatchEvent(new CustomEvent("cc-modal-close", { bubbles: true }));
-  }
-
-  /** Reemplaza el contenido del cuerpo del modal en caliente. */
-  setBody(node) {
-    const body = this.querySelector('[data-role="body"]');
-    body.innerHTML = "";
-    body.appendChild(node);
-  }
-
-  setTitle(text) {
-    const el = this.querySelector(".cc-modal__title");
-    if (el) el.textContent = text;
-  }
+    close() {
+        this.overlay.classList.add("hidden");
+        this.content.innerHTML = "";
+    }
 }
 
-customElements.define("cc-modal", CCModal);
+customElements.define("app-modal", AppModal);
+
+export function openModal(html) {
+    document.querySelector("app-modal").open(html);
+}
+
+export function closeModal() {
+    document.querySelector("app-modal").close();
+}
