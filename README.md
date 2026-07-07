@@ -66,6 +66,24 @@ La interfaz reutiliza componentes personalizados definidos con `customElements.d
 
 Estilos con enfoque **mobile first** y tres breakpoints (600px, 900px, 1200px). En móvil el sidebar se despliega como menú lateral y las tablas se muestran en formato tarjeta; en escritorio el sidebar es fijo y las tablas se muestran por columnas.
 
+## Capturas de pantalla
+
+### Vista principal (cliente)
+
+![Vista principal](capturas/principal.png)
+
+### Catálogo de eventos
+
+![Eventos](capturas/eventos.png)
+
+### Carrito de compras
+
+![Carrito](capturas/carrito.png)
+
+### Panel de administración
+
+![Admin](capturas/admin.png)
+
 ## Instalación y ejecución
 
 1. Clonar el repositorio.
