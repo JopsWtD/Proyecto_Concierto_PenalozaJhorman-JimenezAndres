@@ -17,7 +17,7 @@ class CustomerNavbar extends HTMLElement {
         this.innerHTML = `
         <nav id="customer-navbar">
             <div id="navbar-inner">
-                <a id="navbar-brand" href="#/">Conciertos Conectados</a>
+                <a id="navbar-brand" href="#/">Shoppivents</a>
 
                 <button id="navbar-burger" type="button" aria-label="Abrir menú">☰</button>
 

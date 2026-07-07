@@ -11,14 +11,14 @@ class LoginModal extends HTMLElement {
                 </div>
                 <div id="login-brand-bottom">
                     <h2>Gestión de Alta Fidelidad.</h2>
-                    <p>Accede al panel administrativo de Conciertos Conectados para gestionar categorías, eventos y ventas en tiempo real.</p>
+                    <p>Accede al panel administrativo de Shoppivents para gestionar categorías, eventos y ventas en tiempo real.</p>
                 </div>
             </aside>
 
             <div id="login-panel">
                 <a id="login-back" href="#/">← Volver al sitio</a>
                 <form id="login-form">
-                    <h2>Conciertos Conectados</h2>
+                    <h2>Shoppivents</h2>
                     <p>Bienvenido de nuevo. Por favor, ingresa tus credenciales.</p>
 
                     <label>
