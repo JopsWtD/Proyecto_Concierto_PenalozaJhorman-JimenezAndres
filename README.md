@@ -1,6 +1,6 @@
-# Conciertos Conectados
+# Shoppivents
 
-Plataforma web para la empresa organizadora de eventos **Conciertos Conectados**. Permite que un administrador gestione categorías, eventos y ventas, y que los clientes consulten eventos, los agreguen al carrito y realicen una compra simulada.
+Plataforma web de venta de entradas para eventos y conciertos. Permite que un administrador gestione categorías, eventos y ventas, y que los clientes consulten eventos, los agreguen al carrito y realicen una compra simulada.
 
 Construida con **HTML + CSS + JavaScript puro**, sin frameworks. Toda la información se conserva en el navegador usando **localStorage**.
 
@@ -21,7 +21,7 @@ Construida con **HTML + CSS + JavaScript puro**, sin frameworks. Toda la informa
 
 ### Front de Eventos para Clientes
 
-- **Vista principal**: hero, buscador, eventos destacados, categorías y próximos eventos.
+- **Vista principal**: hero, buscador, eventos destacados, categorías y próximos eventos. Es la primera vista pública al abrir la aplicación.
 - **Catálogo de eventos**: buscador por nombre en tiempo real más filtros por ciudad y por categoría.
 - **Detalle del evento**: imagen ampliada, nombre, descripción, fecha, hora, precio, botón para volver y botón para agregar al carrito.
 - **Carrito de compras**: modal con miniatura, nombre, precio, control de cantidad, subtotal y total. Al comprar solicita identificación, nombre, dirección, teléfono y e-mail, y registra la venta con fecha. Muestra confirmación con número de pedido.
@@ -30,10 +30,14 @@ Construida con **HTML + CSS + JavaScript puro**, sin frameworks. Toda la informa
 
 Los datos se guardan en localStorage bajo las claves `categorias`, `eventos`, `ventas`, `carrito` y `sesionAdmin`, serializando con `JSON.stringify()` y recuperando con `JSON.parse()`. El admin y el cliente comparten el mismo almacenamiento: los eventos creados en el panel aparecen en la vista pública y las compras de los clientes se ven en el módulo de ventas.
 
+## Diseño
+
+Sistema de diseño de estética tecnológica de alta fidelidad: paleta anclada en un **azul profundo** (`#0F172A`) con acentos en **cian** (`#06B6D4`), tipografías **Montserrat** para títulos e **Inter** para texto, sombras suaves, chips tipo píldora y tarjetas de eventos con imagen destacada. La vista pública abre directamente en el catálogo de cliente; el acceso administrativo se hace desde el botón Ingresar.
+
 ## Estructura del proyecto
 
 ```
-Proyecto_Conciertos_PenalozaJhorman-JimenezAndres/
+Proyecto_Concierto_PenalozaJhorman-JimenezAndres/
 ├── index.html
 ├── README.md
 ├── css/
@@ -71,4 +75,4 @@ Estilos con enfoque **mobile first** y tres breakpoints (600px, 900px, 1200px). 
    python -m http.server 8000
    ```
 
-3. Ingresar a `http://localhost:8000` y usar las credenciales de administrador.
+3. Ingresar a `http://localhost:8000`. La vista pública de clientes carga por defecto; para el panel administrativo, usar el botón **Ingresar** con las credenciales indicadas.
