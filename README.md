@@ -70,19 +70,19 @@ Estilos con enfoque **mobile first** y tres breakpoints (600px, 900px, 1200px). 
 
 ### Vista principal (cliente)
 
-![Vista principal](capturas/principal.png)
+![Vista principal](screenshots/main.png)
 
 ### Catálogo de eventos
 
-![Eventos](capturas/eventos.png)
+![Eventos](screenshots/events.png)
 
 ### Carrito de compras
 
-![Carrito](capturas/carrito.png)
+![Carrito](screenshots/cart.png)
 
 ### Panel de administración
 
-![Admin](capturas/admin.png)
+![Admin](screenshots/admin.png)
 
 ## Instalación y ejecución
 
