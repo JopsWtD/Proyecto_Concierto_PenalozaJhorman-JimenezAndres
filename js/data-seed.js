@@ -128,4 +128,15 @@ export function seedData() {
       },
     ]);
   }
+
+  if (getData("sugerencias") === 0) {
+    saveData("sugerencias", [{
+      id: Date.now(),
+      nombre: 'Laura Gómez',
+      email: 'laura@mail.com',
+      mensaje: 'Me gustaría ver más eventos en Medellín.',
+      fecha: new Date().toISOString()
+    },
+    ]);
+  }
 }
